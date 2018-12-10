@@ -116,9 +116,11 @@ mocktwitter_status.data.frame <- function(x, file = NULL) {
   y <- gsub("\\{profile_image_url\\}",
     sub("_[^_]+\\.jpg", "_", x$profile_image_url), y)
   y <- gsub("\\{profile_banner_url\\}", x$profile_banner_url, y)
-  if (!is.null(fav_users)) {
+  y <- if (!is.null(fav_users)) {
     fav_users_code <- li_favusers(fav_users)
-    y <- gsub("\\{fav_users\\}", fav_users_code, y)
+    gsub("\\{fav_users\\}", fav_users_code, y)
+  } else {
+    gsub("\\{fav_users\\}", "", y)
   }
   if (is.null(file)) {
     file <- tmp <- tempfile(fileext = ".html")
