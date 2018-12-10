@@ -121,15 +121,14 @@ mocktwitter_status.data.frame <- function(x, file = NULL) {
     y <- gsub("\\{fav_users\\}", fav_users_code, y)
   }
   if (is.null(file)) {
-    file <- tempfile(fileext = ".html")
+    file <- tmp <- tempfile(fileext = ".html")
     message("Saving as ", file)
-    writeLines(y, file)
-    file.copy(file, tmp)
+    writeLines(y, tmp)
   } else {
     tmp <- tempfile(fileext = ".html")
     message("Saving as ", file)
-    writeLines(y, file)
-    file.copy(file, tmp)
+    writeLines(y, tmp)
+    file.copy(tmp, file)
   }
   if (rstudioapi::isAvailable()) {
     rstudioapi::viewer(tmp)
