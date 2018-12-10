@@ -99,6 +99,9 @@ mocktwitter_status.data.frame <- function(x, file = NULL) {
   } else {
     fav_users <- NULL
   }
+  profile_image_url_base <- sub("[^_]+\\.\\w{3,4}$", "", x$profile_image_url)
+  profile_image_url_ext <- sub(".+(\\.\\w{3,4})$", "\\1", x$profile_image_url)
+
   y <- template
   y <- gsub("\\{status_text\\}", x$text, y)
   y <- gsub("\\{screen_name\\}", x$screen_name, y)
@@ -113,8 +116,8 @@ mocktwitter_status.data.frame <- function(x, file = NULL) {
     x$profile_expanded_url), y)
   y <- gsub("\\{account_created_at\\}", x$account_created_at, y)
   y <- gsub("\\{created_at\\}", x$created_at, y)
-  y <- gsub("\\{profile_image_url\\}",
-    sub("_[^_]+\\.jpg", "_", x$profile_image_url), y)
+  y <- gsub("\\{profile_image_url\\}(\\w+)\\.[^\"]{3,4}",
+    paste0(profile_image_url_base, "\\1", profile_image_url_ext), y)
   y <- gsub("\\{profile_banner_url\\}", x$profile_banner_url, y)
   y <- if (!is.null(fav_users)) {
     fav_users_code <- li_favusers(fav_users)
